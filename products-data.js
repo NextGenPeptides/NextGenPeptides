@@ -7,6 +7,8 @@ export const SEED_PRODUCTS = [
     price: 65,
     stock: 30,
     maxStock: 30,
+    dosage: "10mg / flacon",
+    servings: "1 flacon",
     accent: "#C8FF3D",
     lot: "GR-R10"
   },
@@ -18,6 +20,8 @@ export const SEED_PRODUCTS = [
     price: 85,
     stock: 20,
     maxStock: 20,
+    dosage: "20mg / flacon",
+    servings: "1 flacon",
     accent: "#C8FF3D",
     lot: "GR-R20"
   },
@@ -29,6 +33,8 @@ export const SEED_PRODUCTS = [
     price: 110,
     stock: 19,
     maxStock: 20,
+    dosage: "30mg / flacon",
+    servings: "1 flacon",
     accent: "#C8FF3D",
     lot: "GR-R30"
   },
@@ -40,6 +46,8 @@ export const SEED_PRODUCTS = [
     price: 50,
     stock: 28,
     maxStock: 30,
+    dosage: "100mg / flacon",
+    servings: "1 flacon",
     accent: "#8FD1FF",
     lot: "GR-GHKQ"
   },
@@ -51,6 +59,8 @@ export const SEED_PRODUCTS = [
     price: 60,
     stock: 19,
     maxStock: 20,
+    dosage: "10mg / flacon",
+    servings: "1 flacon",
     accent: "#FFC24B",
     lot: "GR-MT2"
   },
@@ -62,7 +72,8 @@ export const SEED_PRODUCTS = [
     price: 4,
     stock: 49,
     maxStock: 50,
-    dosage: "Nb mL suivant le peptide.",
+    dosage: "10mL / flacon",
+    servings: "1 flacon",
     accent: "#FF6B6B",
     lot: "GR-BACWAT"
   },
@@ -74,7 +85,8 @@ export const SEED_PRODUCTS = [
     price: 4,
     stock: 29,
     maxStock: 30,
-    dosage: "Nb mL suivant le peptide.",
+    dosage: "10mL / flacon",
+    servings: "1 flacon",
     accent: "#7BE0C8",
     lot: "GR-AAWAT"
   },
