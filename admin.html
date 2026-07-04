@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRAMME. — Espace admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<style>
+  body{padding-bottom:60px;}
+  .admin-wrap{max-width:1000px;margin:0 auto;padding:60px 24px;}
+  .login-box{max-width:380px;margin:120px auto;background:var(--concrete);border:1px solid var(--line);padding:32px;}
+  .order-row{background:var(--concrete);border:1px solid var(--line);padding:20px;margin-bottom:14px;}
+  .order-row-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;}
+  .order-code{font-family:var(--mono);color:var(--lime);font-size:1.05rem;}
+  .order-meta{font-family:var(--mono);font-size:.74rem;color:var(--bone-dim);}
+  .order-items{font-size:.86rem;color:var(--bone-dim);margin:10px 0;line-height:1.7;}
+  .order-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .order-actions button{
+    font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;
+    padding:9px 14px;border-radius:var(--radius);border:1px solid var(--line);background:var(--ink);color:var(--bone);
+  }
+  .order-actions .ok{border-color:#5AC878;color:#5AC878;}
+  .order-actions .cancel{border-color:var(--rust);color:var(--rust);}
+  .order-actions .reset{border-color:var(--steel);}
+  .top-actions{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
+  .demo-warning{border:1px solid var(--rust);background:rgba(180,67,31,.08);color:var(--rust);padding:14px;font-family:var(--mono);font-size:.78rem;margin-bottom:26px;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="logo"><span class="dot"></span>GRAMME. <span style="color:var(--bone-dim);font-size:.8rem;">/ admin</span></div>
+    <button class="btn btn-ghost" id="logoutBtn" style="display:none;">Se déconnecter</button>
+  </div>
+</header>
+
+<div id="loginView" class="login-box">
+  <h3 style="font-family:var(--display);text-transform:uppercase;margin-top:0;">Connexion admin</h3>
+  <div class="field"><label for="email">Email</label><input id="email" type="email"></div>
+  <div class="field"><label for="pass">Mot de passe</label><input id="pass" type="password"></div>
+  <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;">Se connecter</button>
+  <p id="loginError" style="color:var(--rust);font-size:.82rem;margin-top:14px;"></p>
+</div>
+
+<div id="dashView" class="admin-wrap" style="display:none;">
+  <div id="demoWarning" class="demo-warning" style="display:none;">
+    Mode démo : Firebase n'est pas configuré. Cette vue lit les commandes stockées localement dans ce navigateur
+    (créées via index.html en mode démo) — ce n'est pas sécurisé et n'est là que pour tester le flux.
+    Configure firebase-config.js + firestore.rules avant mise en production.
+  </div>
+  <div class="top-actions">
+    <h2 style="font-family:var(--display);text-transform:uppercase;margin:0;">Commandes</h2>
+    <div class="filters" id="statusFilters"></div>
+  </div>
+  <div id="ordersList"></div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

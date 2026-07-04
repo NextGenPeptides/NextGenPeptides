@@ -1,0 +1,64 @@
+rules_version = '2';
+
+// ==========================================================================
+// GRAMME. — règles Firestore
+//
+// Principes :
+// - Les produits sont publics en lecture, jamais en écriture côté client.
+// - N'IMPORTE QUI peut CRÉER une commande (checkout public), mais personne
+//   à part l'admin ne peut la MODIFIER ou la SUPPRIMER (empêche un client
+//   de se marquer "payé" lui-même).
+// - Le suivi de commande (SAV) ne permet que la lecture d'UN document dont
+//   on connaît déjà l'ID exact (get), jamais la liste complète (list) :
+//   impossible de "scanner" toutes les commandes sans être admin.
+// - Les tickets SAV sont créables par tout le monde, lisibles/modifiables
+//   uniquement par l'admin.
+//
+// Remplace ADMIN_UIDS par le(s) UID Firebase Auth de tes comptes admin
+// (Console Firebase > Authentication > onglet Users, colonne "User UID").
+// ==========================================================================
+
+function isAdmin() {
+  return request.auth != null &&
+    request.auth.uid in [
+      "REMPLACE_MOI_PAR_TON_UID_ADMIN"
+    ];
+}
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    match /orders/{orderId} {
+      // Création publique (le checkout tourne sans compte utilisateur),
+      // mais on borne la forme du document pour éviter les abus basiques.
+      allow create: if
+        request.resource.data.orderNumber is string &&
+        request.resource.data.contact is string &&
+        request.resource.data.items is list &&
+        request.resource.data.status == "en_attente" &&
+        request.resource.data.totalEUR is number &&
+        request.resource.data.totalEUR >= 0;
+
+      // Lecture d'un document précis autorisée (suivi de commande via son
+      // numéro) — mais lister toutes les commandes est réservé à l'admin.
+      allow get: if true;
+      allow list: if isAdmin();
+
+      // Seul l'admin peut changer le statut / modifier / supprimer.
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /tickets/{ticketId} {
+      allow create: if
+        request.resource.data.contact is string &&
+        request.resource.data.message is string;
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}
