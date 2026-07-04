@@ -1,12 +1,6 @@
 import { SEED_PRODUCTS, productSlides } from "./products-data.js";
 import { firebaseConfig, WALLETS, RATES_EUR } from "./firebase-config.js";
 
-/* ==========================================================================
-   MODE DÉMO vs FIREBASE
-   Si firebase-config.js contient encore "REMPLACE_MOI", le site tourne en
-   mode démo (localStorage) pour que tu puisses tout tester sans backend.
-   Dès que tu mets tes vraies clés, il bascule automatiquement sur Firestore.
-   ========================================================================== */
 const DEMO_MODE = firebaseConfig.apiKey === "REMPLACE_MOI";
 
 let db = null;
@@ -18,13 +12,11 @@ if (!DEMO_MODE) {
   db = fsFns.getFirestore(app);
 }
 
-/* ---------------------------------- state ---------------------------------- */
 let PRODUCTS = [];
 let cart = JSON.parse(localStorage.getItem("gramme_cart") || "[]");
 let selectedCrypto = "USDT";
 let lastOrderTotal = 0;
 
-/* ---------------------------------- helpers ---------------------------------- */
 const eur = (n) => n.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " €";
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => Array.from(document.querySelectorAll(sel));
@@ -43,7 +35,6 @@ function saveCart(){
   renderCart();
 }
 
-/* ---------------------------------- data loading ---------------------------------- */
 async function loadProducts(){
   if (DEMO_MODE) {
     PRODUCTS = SEED_PRODUCTS.map(p => ({ ...p }));
@@ -62,7 +53,6 @@ async function loadProducts(){
   }
 }
 
-/* ---------------------------------- product card + slider ---------------------------------- */
 function stockState(p){
   if (p.stock <= 0) return { cls: "out", label: "Épuisé" };
   if (p.stock <= p.maxStock * 0.2) return { cls: "low", label: "Stock bas" };
@@ -116,7 +106,6 @@ function wireSliders(container){
     slider.querySelector(".prev").addEventListener("click", (e) => { e.stopPropagation(); go(index-1); });
     slider.querySelector(".next").addEventListener("click", (e) => { e.stopPropagation(); go(index+1); });
 
-    // swipe tactile / souris, sans avoir besoin de cliquer sur le produit
     let startX = 0, dragging = false;
     const start = (x) => { dragging = true; startX = x; };
     const end = (x) => {
@@ -149,7 +138,6 @@ function renderFilters(){
   }));
 }
 
-/* ---------------------------------- cart ---------------------------------- */
 function addToCart(id){
   const p = PRODUCTS.find(x => x.id === id);
   if (!p || p.stock <= 0) return;
@@ -214,7 +202,6 @@ function renderCart(){
   renderHome(); // garde les jauges de stock synchrones sur l'accueil
 }
 
-/* ---------------------------------- navigation ---------------------------------- */
 function showView(name){
   $$(".view").forEach(v => v.classList.remove("active"));
   $(`#view-${name}`)?.classList.add("active");
@@ -235,7 +222,6 @@ $("#goCheckout").addEventListener("click", () => {
   showView("checkout");
 });
 
-/* ---------------------------------- checkout ---------------------------------- */
 function renderCheckout(){
   $("#checkoutItems").innerHTML = cart.map(l => {
     const p = PRODUCTS.find(x => x.id === l.id);
@@ -267,9 +253,8 @@ $("#copyAddr").addEventListener("click", () => {
   toast("Adresse copiée");
 });
 
-/* ---------------------------------- numéro de commande unique ---------------------------------- */
 function randomCode(){
-  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // sans caractères ambigus
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let s = "";
   for (let i = 0; i < 4; i++) s += chars[Math.floor(Math.random() * chars.length)];
   const d = new Date();
@@ -341,7 +326,6 @@ async function submitOrder(){
 }
 $("#confirmPayBtn").addEventListener("click", submitOrder);
 
-/* ---------------------------------- SAV : suivi + contact ---------------------------------- */
 const STATUS_LABEL = {
   en_attente: { cls: "status-pending", label: "En attente de vérification" },
   paye: { cls: "status-paid", label: "Paiement confirmé — expédition en cours" },
@@ -411,12 +395,10 @@ async function sendSavTicket(){
 }
 $("#savSendBtn").addEventListener("click", sendSavTicket);
 
-/* ---------------------------------- home ---------------------------------- */
 function renderHome(){
   renderGrid($("#homeGrid"), PRODUCTS.slice(0,4));
 }
 
-/* ---------------------------------- init ---------------------------------- */
 (async function init(){
   await loadProducts();
   renderFilters();
