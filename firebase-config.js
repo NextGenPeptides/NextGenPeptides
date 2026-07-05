@@ -22,7 +22,7 @@ export const RATES_EUR = {
 };
 
 export const EMAILJS_CONFIG = {
-  publicKey: "REMPLACE_MOI_PAR_TA_PUBLIC_KEY",
-  serviceId: "REMPLACE_MOI_PAR_TON_SERVICE_ID",
-  trackingTemplateId: "REMPLACE_MOI_PAR_TON_TEMPLATE_ID"
+  publicKey: "RH52BXmP9KGP8JYYP",
+  serviceId: "service_qp7lu48",
+  trackingTemplateId: "template_ep2ni1k"
 };
