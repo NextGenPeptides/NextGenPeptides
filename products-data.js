@@ -112,7 +112,7 @@ export function productSlides(p){
     <svg viewBox="0 0 220 260" width="100%" height="100%">
       <rect x="6" y="6" width="208" height="248" fill="none" stroke="${p.accent}" stroke-width="1.5"/>
       <rect x="6" y="6" width="208" height="46" fill="${p.accent}"/>
-      <text x="18" y="34" font-family="Archivo Black, sans-serif" font-size="15" fill="#0B0B0C">GRAMME.</text>
+      <text x="18" y="34" font-family="Archivo Black, sans-serif" font-size="15" fill="#0B0B0C">NextGen Peptides.</text>
       <line x1="6" y1="70" x2="214" y2="70" stroke="#2C2E31"/>
       <text x="18" y="100" font-family="Archivo Black, sans-serif" font-size="14" fill="#EDEAE2">${esc(p.name).toUpperCase()}</text>
       <text x="18" y="122" font-family="monospace" font-size="9" fill="#B9B6AC">${esc(p.cat)}</text>
@@ -140,7 +140,7 @@ export function productSlides(p){
         <text y="-6" font-family="Archivo Black, sans-serif" font-size="11" fill="${p.accent}" text-anchor="middle">CONTRÔLÉ</text>
         <text y="12" font-family="monospace" font-size="9" fill="${p.accent}" text-anchor="middle">${p.lot}</text>
       </g>
-      <text x="18" y="240" font-family="monospace" font-size="7" fill="#4A4E52">NextGen Peptide : usage sportif</text>
+      <text x="18" y="240" font-family="monospace" font-size="7" fill="#4A4E52">NextGen Peptides : usage sportif</text>
     </svg>`;
   const photo = p.images && p.images[0]
   ? `<img src="${p.images[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;">`
