@@ -10,7 +10,7 @@ export const SEED_PRODUCTS = [
     maxStock: 30,
     dosage: "10mg / flacon",
     servings: "1 flacon",
-    weightGrams: 5,
+    weightGrams: 6,
     accent: "#C8FF3D",
     lot: "GR-R10"
   },
@@ -25,7 +25,7 @@ export const SEED_PRODUCTS = [
     maxStock: 20,
     dosage: "20mg / flacon",
     servings: "1 flacon",
-    weightGrams: 5,
+    weightGrams: 6,
     accent: "#C8FF3D",
     lot: "GR-R20"
   },
@@ -40,7 +40,7 @@ export const SEED_PRODUCTS = [
     maxStock: 20,
     dosage: "30mg / flacon",
     servings: "1 flacon",
-    weightGrams: 5,
+    weightGrams: 6,
     accent: "#C8FF3D",
     lot: "GR-R30"
   },
@@ -55,7 +55,7 @@ export const SEED_PRODUCTS = [
     maxStock: 30,
     dosage: "100mg / flacon",
     servings: "1 flacon",
-    weightGrams: 5,
+    weightGrams: 6,
     accent: "#8FD1FF",
     lot: "GR-GHKQ"
   },
@@ -70,7 +70,7 @@ export const SEED_PRODUCTS = [
     maxStock: 20,
     dosage: "10mg / flacon",
     servings: "1 flacon",
-    weightGrams: 5,
+    weightGrams: 6,
     accent: "#FFC24B",
     lot: "GR-MT2"
   },
@@ -85,7 +85,7 @@ export const SEED_PRODUCTS = [
     maxStock: 50,
     dosage: "10mL / flacon",
     servings: "1 flacon",
-    weightGrams: 20,
+    weightGrams: 24,
     accent: "#FF6B6B",
     lot: "GR-BACWAT"
   },
@@ -100,7 +100,7 @@ export const SEED_PRODUCTS = [
     maxStock: 30,
     dosage: "10mL / flacon",
     servings: "1 flacon",
-    weightGrams: 20,
+    weightGrams: 24,
     accent: "#7BE0C8",
     lot: "GR-AAWAT"
   },
