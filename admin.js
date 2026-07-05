@@ -103,7 +103,6 @@ async function updateStatus(code, status){
   }
 }
 
-/* ---------------------------------- envoi email numéro de suivi (EmailJS) ---------------------------------- */
 let emailjsLib = null;
 async function getEmailJS(){
   if (emailjsLib) return emailjsLib;
@@ -165,12 +164,10 @@ function renderFilters(){
   }));
 }
 
-/* ---------------------------------- démo : accès simple par mot de passe local ---------------------------------- */
 function initDemoAuth(){
   $("#demoWarning").style.display = "block";
   $("#loginBtn").addEventListener("click", () => {
-    // Mode démo uniquement : pas de vraie sécurité, juste pour tester l'UI admin.
-    // En production (Firebase configuré), c'est Firebase Auth + firestore.rules qui protègent réellement l'accès.
+
     const pass = $("#pass").value;
     if (pass.length < 4) { $("#loginError").textContent = "Mot de passe démo : n'importe quoi de 4+ caractères."; return; }
     showDash();
@@ -184,7 +181,6 @@ function showDash(){
   renderOrders();
 }
 
-/* ---------------------------------- firebase : vraie auth admin ---------------------------------- */
 async function initFirebaseAuth(){
   const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
   const authMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
@@ -219,7 +215,7 @@ async function initFirebaseAuth(){
 }
 
 if (DEMO_MODE) {
-  $("#email").closest(".field").style.display = "none"; // pas d'email requis en démo
+  $("#email").closest(".field").style.display = "none";
   initDemoAuth();
 } else {
   initFirebaseAuth();
