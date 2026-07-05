@@ -1,3 +1,4 @@
+
 export const firebaseConfig = {
   apiKey: "AIzaSyCQLtiYI0R1jUvBvW4uuzCVzAM8_DAHEP8",
   authDomain: "nextgenpeptides-cbb07.firebaseapp.com",
