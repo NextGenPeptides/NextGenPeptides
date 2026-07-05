@@ -20,7 +20,7 @@ export const ADMIN_UIDS = ["REMPLACE_MOI_PAR_TON_UID_ADMIN"];
 export const WALLETS = {
   BTC:  { label: "Bitcoin (BTC)",        address: "bc1qmdypexays9rfjc36usalyhsfm3k9yyxjr0gkdm" },
   ETH:  { label: "Ethereum (ETH)",       address: "0xfaF93f0dD632Eeb7589023C01A22eA0e46E76990" },
-  USDT: { label: "USDT (réseau TRC20)",  address: "TREMPLACE_MOI_PAR_TON_ADRESSE" }
+  USDT: { label: "USDT (réseau TRC20)",  address: "0xfaF93f0dD632Eeb7589023C01A22eA0e46E76990" }
 };
 
 // Taux indicatifs EUR -> crypto, à défaut d'API de cours en direct.
