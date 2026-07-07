@@ -431,6 +431,6 @@ function renderHome(){
   renderHome();
   renderCart();
   if (DEMO_MODE) {
-    console.info("GRAMME. tourne en mode démo (localStorage) — configure firebase-config.js pour brancher Firestore.");
+    console.info("NextGen Peptides. tourne en mode démo (localStorage) — configure firebase-config.js pour brancher Firestore.");
   }
 })();
