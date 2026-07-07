@@ -286,7 +286,7 @@ async function initFirebaseAuth(){
         renderOrders();
       });
       fsFns.onSnapshot(fsFns.collection(db, "products"), (snap) => {
-        window.__productsCache = snap.docs.map(d => d.data());
+        window.__productsCache = snap.docs.map(d => ({ id: d.id, ...d.data() }));
         if ($("#stockTab").style.display !== "none") renderStock();
       });
       showDash();
