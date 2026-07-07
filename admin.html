@@ -36,6 +36,27 @@
   .tracking-send:disabled{opacity:.5;}
   .tracking-sent-meta{font-family:var(--mono);font-size:.7rem;color:var(--bone-dim);width:100%;}
   .demo-warning{border:1px solid var(--rust);background:rgba(180,67,31,.08);color:var(--rust);padding:14px;font-family:var(--mono);font-size:.78rem;margin-bottom:26px;}
+  .tab-nav{display:flex;gap:8px;margin-bottom:26px;}
+  .tab-nav button{
+    font-family:var(--mono);font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;
+    padding:9px 16px;border-radius:var(--radius);border:1px solid var(--line);background:var(--ink);color:var(--bone-dim);
+  }
+  .tab-nav button.active{border-color:var(--lime);color:var(--lime);}
+  .stock-row{background:var(--concrete);border:1px solid var(--line);padding:18px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+  .stock-row-info{min-width:220px;}
+  .stock-row-name{font-family:var(--display);text-transform:uppercase;font-size:.95rem;}
+  .stock-row-meta{font-family:var(--mono);font-size:.72rem;color:var(--bone-dim);margin-top:4px;}
+  .stock-row-actions{display:flex;gap:10px;align-items:center;}
+  .stock-input{
+    width:90px;font-family:var(--mono);font-size:.85rem;padding:9px 10px;text-align:center;
+    background:var(--ink);border:1px solid var(--line);color:var(--bone);border-radius:var(--radius);
+  }
+  .stock-input.low{border-color:var(--rust);color:var(--rust);}
+  .stock-save{
+    font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;
+    padding:9px 14px;border-radius:var(--radius);border:1px solid var(--lime);color:var(--lime);background:var(--ink);
+  }
+  .stock-save:disabled{opacity:.5;}
 </style>
 </head>
 <body>
@@ -60,11 +81,25 @@
     Mode démo : Firebase n'est pas configuré. Cette vue lit les commandes stockées localement dans ce navigateur
     (créées via index.html en mode démo).
   </div>
-  <div class="top-actions">
-    <h2 style="font-family:var(--display);text-transform:uppercase;margin:0;">Commandes</h2>
-    <div class="filters" id="statusFilters"></div>
+  <div class="tab-nav" id="tabNav">
+    <button data-tab="orders" class="active">Commandes</button>
+    <button data-tab="stock">Stock</button>
   </div>
-  <div id="ordersList"></div>
+
+  <div id="ordersTab">
+    <div class="top-actions">
+      <h2 style="font-family:var(--display);text-transform:uppercase;margin:0;">Commandes</h2>
+      <div class="filters" id="statusFilters"></div>
+    </div>
+    <div id="ordersList"></div>
+  </div>
+
+  <div id="stockTab" style="display:none;">
+    <div class="top-actions">
+      <h2 style="font-family:var(--display);text-transform:uppercase;margin:0;">Stock</h2>
+    </div>
+    <div id="stockList"></div>
+  </div>
 </div>
 
 <div class="toast-stack" id="toastStack"></div>

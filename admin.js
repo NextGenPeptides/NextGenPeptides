@@ -1,4 +1,5 @@
 import { firebaseConfig, ADMIN_UIDS, EMAILJS_CONFIG } from "./firebase-config.js";
+import { SEED_PRODUCTS } from "./products-data.js";
 
 const DEMO_MODE = firebaseConfig.apiKey === "REMPLACE_MOI";
 const $ = (s) => document.querySelector(s);
@@ -154,6 +155,93 @@ async function sendTracking(order, trackingNumber, btn){
   }
 }
 
+function getStoredProducts(){
+  const stored = JSON.parse(localStorage.getItem("gramme_products") || "null");
+  if (stored) return stored;
+  const seeded = {};
+  SEED_PRODUCTS.forEach(p => seeded[p.id] = { ...p });
+  localStorage.setItem("gramme_products", JSON.stringify(seeded));
+  return seeded;
+}
+
+function stockRowHTML(p){
+  const low = p.stock <= 0;
+  return `
+  <div class="stock-row" data-id="${p.id}">
+    <div class="stock-row-info">
+      <div class="stock-row-name">${p.name}</div>
+      <div class="stock-row-meta">${p.cat} · ${p.dosage} · Réf. ${p.lot}</div>
+    </div>
+    <div class="stock-row-actions">
+      <input type="number" class="stock-input ${low ? 'low' : ''}" min="0" max="${p.maxStock}" value="${p.stock}">
+      <span class="stock-row-meta">/ ${p.maxStock}</span>
+      <button class="stock-save">Enregistrer</button>
+    </div>
+  </div>`;
+}
+
+async function renderStock(){
+  let products = [];
+  if (DEMO_MODE) {
+    products = Object.values(getStoredProducts());
+  } else {
+    products = window.__productsCache || [];
+  }
+  products.sort((a,b) => a.name.localeCompare(b.name));
+
+  const list = $("#stockList");
+  list.innerHTML = products.length
+    ? products.map(stockRowHTML).join("")
+    : `<p style="color:var(--bone-dim);font-family:var(--mono);">Aucun produit trouvé.</p>`;
+
+  $$(".stock-row", list).forEach(row => {
+    const id = row.dataset.id;
+    const input = $(".stock-input", row);
+    const saveBtn = $(".stock-save", row);
+    input.addEventListener("input", () => input.classList.toggle("low", Number(input.value) <= 0));
+    saveBtn.addEventListener("click", () => saveStock(id, input, saveBtn));
+  });
+}
+
+async function saveStock(id, input, btn){
+  let value = Math.round(Number(input.value));
+  if (Number.isNaN(value) || value < 0) value = 0;
+  input.value = value;
+  const originalLabel = btn.textContent;
+  btn.disabled = true; btn.textContent = "Enregistrement…";
+  try {
+    if (DEMO_MODE) {
+      const stored = getStoredProducts();
+      if (stored[id]) {
+        stored[id].stock = value;
+        localStorage.setItem("gramme_products", JSON.stringify(stored));
+      }
+    } else {
+      const fsFns = window.__fsFns;
+      await fsFns.updateDoc(fsFns.doc(window.__db, "products", id), { stock: value });
+    }
+    toast(`Stock mis à jour : ${id} → ${value}`);
+  } catch (e){
+    console.error(e);
+    toast("Échec de la mise à jour du stock.");
+  } finally {
+    btn.disabled = false; btn.textContent = originalLabel;
+  }
+}
+
+function initTabs(){
+  $$("#tabNav button").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $$("#tabNav button").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const tab = btn.dataset.tab;
+      $("#ordersTab").style.display = tab === "orders" ? "block" : "none";
+      $("#stockTab").style.display = tab === "stock" ? "block" : "none";
+      if (tab === "stock") renderStock();
+    });
+  });
+}
+
 function renderFilters(){
   const opts = [["all","Toutes"],["en_attente","En attente"],["paye","Payées"],["annule","Annulées"]];
   $("#statusFilters").innerHTML = opts.map(([v,l]) => `<button class="${v===currentFilter?'active':''}" data-v="${v}">${l}</button>`).join("");
@@ -177,6 +265,7 @@ function showDash(){
   $("#loginView").style.display = "none";
   $("#dashView").style.display = "block";
   $("#logoutBtn").style.display = "inline-flex";
+  initTabs();
   renderFilters();
   renderOrders();
 }
@@ -195,6 +284,10 @@ async function initFirebaseAuth(){
       fsFns.onSnapshot(fsFns.collection(db, "orders"), (snap) => {
         window.__ordersCache = snap.docs.map(d => d.data());
         renderOrders();
+      });
+      fsFns.onSnapshot(fsFns.collection(db, "products"), (snap) => {
+        window.__productsCache = snap.docs.map(d => d.data());
+        if ($("#stockTab").style.display !== "none") renderStock();
       });
       showDash();
     } else if (user) {
