@@ -91,6 +91,52 @@ button{font-family:inherit;cursor:pointer;}
   font-size:.7rem;
 }
 
+/* Logo cliquable : conserve l'apparence d'origine (était un <div>) */
+.logo{background:none;border:none;padding:0;color:inherit;text-align:left;}
+
+.topbar-right{display:flex;align-items:center;gap:12px;}
+
+/* Bouton burger — masqué sur desktop, affiché sur mobile via media query */
+.burger-btn{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:42px;height:42px;background:var(--concrete-2);border:1px solid var(--line);
+  border-radius:var(--radius);padding:0 10px;
+}
+.burger-btn span{
+  display:block;height:2px;width:100%;background:var(--bone);border-radius:2px;
+  transition:transform .25s var(--ease), opacity .2s var(--ease);
+}
+.burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger-btn.open span:nth-child(2){opacity:0;}
+.burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* Overlay + panneau du menu mobile */
+.mobile-nav-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;transition:opacity .25s;z-index:95;
+}
+.mobile-nav-overlay.open{opacity:1;pointer-events:auto;}
+.mobile-nav{
+  position:fixed;top:0;right:0;height:100%;width:min(300px,86%);
+  background:var(--concrete);border-left:1px solid var(--line);
+  transform:translateX(100%);transition:transform .32s var(--ease);z-index:96;
+  display:flex;flex-direction:column;padding:76px 22px 22px;gap:6px;
+}
+.mobile-nav.open{transform:translateX(0);}
+.mobile-nav-close{
+  position:absolute;top:18px;right:18px;background:none;border:none;
+  color:var(--bone);font-size:1.4rem;line-height:1;padding:6px;
+}
+.mobile-nav-link{
+  display:block;width:100%;text-align:left;background:none;border:none;
+  color:var(--bone-dim);font-family:var(--mono);font-size:.95rem;
+  letter-spacing:.04em;text-transform:uppercase;text-decoration:none;
+  padding:14px 4px;border-bottom:1px solid var(--line);transition:color .2s;
+}
+.mobile-nav-link:hover,.mobile-nav-link.active{color:var(--bone);}
+.mobile-nav-link.active{border-color:var(--lime);}
+.mobile-nav-admin{color:var(--lime);border-bottom:none;margin-top:10px;}
+
 section{padding:100px 0;}
 .view{display:none;}
 .view.active{display:block;}
@@ -338,12 +384,54 @@ footer{border-top:1px solid var(--line);padding:36px 0;}
 
 @media (max-width:860px){
   .hero-grid,.checkout-grid,.sav-grid{grid-template-columns:1fr;}
-  .nav{gap:16px;}
-  .nav span.nav-labels{display:none;}
+  /* Nav desktop remplacée par le burger sur tablette/mobile */
+  .nav{display:none;}
+  .burger-btn{display:flex;}
   .stats-strip{grid-template-columns:repeat(2,1fr);}
   .stats-strip div:nth-child(2){border-right:none;}
 }
+
 @media (max-width:560px){
-  .nav{display:none;}
-  section{padding:64px 0;}
+  section{padding:56px 0;}
+  .wrap{padding:0 16px;}
+  .topbar-inner{padding:12px 16px;}
+  .logo{font-size:1.05rem;}
+
+  .hero{padding:40px 0 60px;}
+  .hero-grid{gap:36px;}
+  .hero-label{margin-bottom:20px;font-size:.72rem;}
+  .hero-sub{font-size:.98rem;margin-bottom:26px;}
+  .hero-ctas{gap:10px;}
+  .hero-ctas .btn{flex:1;justify-content:center;}
+
+  /* Grille produits : 1 colonne, plus lisible sur petit écran */
+  .grid{grid-template-columns:1fr;gap:16px;}
+  .stats-strip div{padding:20px 16px;}
+  .stats-strip .num{font-size:1.5rem;}
+
+  .section-head{margin-bottom:30px;gap:16px;}
+  .section-head .btn{width:100%;justify-content:center;}
+
+  .panel{padding:20px;}
+  .checkout-grid,.sav-grid{gap:24px;}
+
+  /* Le tiroir panier occupe tout l'écran sur mobile */
+  .drawer{width:100%;}
+
+  .cart-btn{padding:9px 12px;}
+  .toast-stack{left:16px;right:16px;transform:none;}
+  .toast{width:100%;text-align:center;}
+}
+
+/* Empêche le zoom automatique iOS au focus (police >= 16px) */
+@media (max-width:768px){
+  .field input,.field textarea,.field select,
+  input[type="text"],input[type="email"],input[type="password"],
+  input[type="number"],textarea{font-size:16px;}
+}
+
+/* Confort tactile : cibles d'au moins 44px sur écran tactile */
+@media (hover:none){
+  .btn,.filters button,.crypto-choices button,.add-btn{min-height:44px;}
+  .slider-arrow{opacity:1;}
 }

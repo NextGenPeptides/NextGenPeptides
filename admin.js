@@ -85,8 +85,8 @@ async function renderOrders(){
   $$(".order-row", list).forEach(row => {
     const code = row.dataset.code;
     const order = orders.find(o => o.orderNumber === code);
-    const input = row.querySelector(".tracking-input");
-    const sendBtn = row.querySelector(".tracking-send");
+    const input = $(".tracking-input", row);
+    const sendBtn = $(".tracking-send", row);
     sendBtn?.addEventListener("click", () => sendTracking(order, input.value.trim(), sendBtn));
   });
 }
@@ -196,8 +196,8 @@ async function renderStock(){
 
   $$(".stock-row", list).forEach(row => {
     const id = row.dataset.id;
-    const input = row.querySelector(".stock-input");
-    const saveBtn = row.querySelector(".stock-save");
+    const input = $(".stock-input", row);
+    const saveBtn = $(".stock-save", row);
     input.addEventListener("input", () => input.classList.toggle("low", Number(input.value) <= 0));
     saveBtn.addEventListener("click", () => saveStock(id, input, saveBtn));
   });
@@ -260,6 +260,7 @@ function initDemoAuth(){
     if (pass.length < 4) { $("#loginError").textContent = "Mot de passe démo : n'importe quoi de 4+ caractères."; return; }
     showDash();
   });
+  $("#logoutBtn").addEventListener("click", demoLogout);
 }
 function showDash(){
   $("#loginView").style.display = "none";
@@ -268,6 +269,17 @@ function showDash(){
   initTabs();
   renderFilters();
   renderOrders();
+}
+
+function demoLogout(){
+  $("#dashView").style.display = "none";
+  $("#logoutBtn").style.display = "none";
+  $("#loginView").style.display = "block";
+  const passField = $("#pass");
+  if (passField) passField.value = "";
+  const err = $("#loginError");
+  if (err) err.textContent = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function initFirebaseAuth(){

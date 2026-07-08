@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>NextGen Peptides</title>
 <meta name="description" content="NextGen Peptides : Vente et envoie de peptides fiables et sécurisé.">
 <link rel="stylesheet" href="style.css">
@@ -11,17 +11,33 @@
 
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="logo"><span class="dot"></span>NextGen Peptides</div>
+    <button type="button" class="logo" id="logoBtn" aria-label="Retour à l'accueil">
+      <span class="dot"></span>NextGen Peptides
+    </button>
     <nav class="nav">
       <button data-view="home" class="active">Accueil</button>
       <button data-view="shop">Produits</button>
       <button data-view="sav">SAV</button>
     </nav>
-    <button class="cart-btn" id="openCart">
-      Panier <span class="cart-count" id="cartCount">0</span>
-    </button>
+    <div class="topbar-right">
+      <button class="cart-btn" id="openCart">
+        Panier <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button type="button" class="burger-btn" id="burgerBtn" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobileNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
+
+<div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+<nav class="mobile-nav" id="mobileNav" aria-hidden="true">
+  <button type="button" class="mobile-nav-close" id="mobileNavClose" aria-label="Fermer le menu">✕</button>
+  <button type="button" class="mobile-nav-link active" data-mnav="home">Accueil</button>
+  <button type="button" class="mobile-nav-link" data-mnav="shop">Produits</button>
+  <button type="button" class="mobile-nav-link" data-mnav="sav">SAV</button>
+  <a href="admin.html" class="mobile-nav-link mobile-nav-admin">Espace admin →</a>
+</nav>
 
 <main>
 <section class="view active" id="view-home">
@@ -220,5 +236,71 @@
 <div class="toast-stack" id="toastStack"></div>
 
 <script type="module" src="app.js"></script>
+<script>
+(function(){
+  var logoBtn = document.getElementById('logoBtn');
+  var burgerBtn = document.getElementById('burgerBtn');
+  var mobileNav = document.getElementById('mobileNav');
+  var mobileNavOverlay = document.getElementById('mobileNavOverlay');
+  var mobileNavClose = document.getElementById('mobileNavClose');
+  var mobileNavLinks = document.querySelectorAll('.mobile-nav-link[data-mnav]');
+  var desktopNavBtns = document.querySelectorAll('.nav button[data-view]');
+
+  function goToView(view){
+    var target = document.querySelector('.nav button[data-view="' + view + '"]');
+    if (target) target.click();
+  }
+
+  function openMenu(){
+    mobileNav.classList.add('open');
+    mobileNavOverlay.classList.add('open');
+    burgerBtn.classList.add('open');
+    burgerBtn.setAttribute('aria-expanded', 'true');
+    mobileNav.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    mobileNav.classList.remove('open');
+    mobileNavOverlay.classList.remove('open');
+    burgerBtn.classList.remove('open');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+    mobileNav.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  if (burgerBtn) {
+    burgerBtn.addEventListener('click', function(){
+      if (mobileNav.classList.contains('open')) closeMenu(); else openMenu();
+    });
+  }
+  if (mobileNavClose) mobileNavClose.addEventListener('click', closeMenu);
+  if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', closeMenu);
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeMenu(); });
+
+  mobileNavLinks.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mobileNavLinks.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      goToView(btn.dataset.mnav);
+      closeMenu();
+    });
+  });
+
+  if (logoBtn) {
+    logoBtn.addEventListener('click', function(){
+      goToView('home');
+      closeMenu();
+    });
+  }
+
+  desktopNavBtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      mobileNavLinks.forEach(function(b){
+        b.classList.toggle('active', b.dataset.mnav === btn.dataset.view);
+      });
+    });
+  });
+})();
+</script>
 </body>
 </html>
